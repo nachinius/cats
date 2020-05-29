@@ -69,7 +69,7 @@ object Bifunctor {
    */
   @inline def apply[F[_, _]](implicit instance: Bifunctor[F]): Bifunctor[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Bifunctor[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -78,7 +78,7 @@ object Bifunctor {
     def leftWiden[C >: A]: F[C, B] = typeClassInstance.leftWiden[A, B, C](self)
   }
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B]
-  trait ToBifunctorOps {
+  trait ToBifunctorOps extends Serializable {
     implicit def toBifunctorOps[F[_, _], A, B](target: F[A, B])(implicit tc: Bifunctor[F]): Ops[F, A, B] {
       type TypeClassType = Bifunctor[F]
     } = new Ops[F, A, B] {

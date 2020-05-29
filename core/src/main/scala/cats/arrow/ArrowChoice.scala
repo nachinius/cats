@@ -54,7 +54,7 @@ object ArrowChoice {
    */
   @inline def apply[F[_, _]](implicit instance: ArrowChoice[F]): ArrowChoice[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: ArrowChoice[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -66,7 +66,7 @@ object ArrowChoice {
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B] with Arrow.AllOps[F, A, B] with Choice.AllOps[F, A, B] {
     type TypeClassType <: ArrowChoice[F]
   }
-  trait ToArrowChoiceOps {
+  trait ToArrowChoiceOps extends Serializable {
     implicit def toArrowChoiceOps[F[_, _], A, B](target: F[A, B])(implicit tc: ArrowChoice[F]): Ops[F, A, B] {
       type TypeClassType = ArrowChoice[F]
     } = new Ops[F, A, B] {

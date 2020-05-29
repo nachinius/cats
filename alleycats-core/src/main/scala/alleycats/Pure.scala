@@ -33,13 +33,13 @@ object Pure {
    */
   @inline def apply[F[_]](implicit instance: Pure[F]): Pure[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Pure[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
   }
   trait AllOps[F[_], A] extends Ops[F, A]
-  trait ToPureOps {
+  trait ToPureOps extends Serializable {
     implicit def toPureOps[F[_], A](target: F[A])(implicit tc: Pure[F]): Ops[F, A] {
       type TypeClassType = Pure[F]
     } = new Ops[F, A] {

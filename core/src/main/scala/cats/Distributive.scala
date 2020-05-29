@@ -33,7 +33,7 @@ object Distributive {
    */
   @inline def apply[F[_]](implicit instance: Distributive[F]): Distributive[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Distributive[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -41,7 +41,7 @@ object Distributive {
   trait AllOps[F[_], A] extends Ops[F, A] with Functor.AllOps[F, A] {
     type TypeClassType <: Distributive[F]
   }
-  trait ToDistributiveOps {
+  trait ToDistributiveOps extends Serializable {
     implicit def toDistributiveOps[F[_], A](target: F[A])(implicit tc: Distributive[F]): Ops[F, A] {
       type TypeClassType = Distributive[F]
     } = new Ops[F, A] {

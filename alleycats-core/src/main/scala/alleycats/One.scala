@@ -28,7 +28,7 @@ object One {
    */
   @inline def apply[A](implicit instance: One[A]): One[A] = instance
 
-  trait Ops[A] {
+  trait Ops[A] extends Serializable {
     type TypeClassType <: One[A]
     def self: A
     val typeClassInstance: TypeClassType
@@ -36,7 +36,7 @@ object One {
     def nonOne(implicit ev: Eq[A]): Boolean = typeClassInstance.nonOne(self)(ev)
   }
   trait AllOps[A] extends Ops[A]
-  trait ToOneOps {
+  trait ToOneOps extends Serializable {
     implicit def toOneOps[A](target: A)(implicit tc: One[A]): Ops[A] {
       type TypeClassType = One[A]
     } = new Ops[A] {

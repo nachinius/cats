@@ -35,7 +35,7 @@ object Category {
    */
   @inline def apply[F[_, _]](implicit instance: Category[F]): Category[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Category[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -43,7 +43,7 @@ object Category {
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B] with Compose.AllOps[F, A, B] {
     type TypeClassType <: Category[F]
   }
-  trait ToCategoryOps {
+  trait ToCategoryOps extends Serializable {
     implicit def toCategoryOps[F[_, _], A, B](target: F[A, B])(implicit tc: Category[F]): Ops[F, A, B] {
       type TypeClassType = Category[F]
     } = new Ops[F, A, B] {

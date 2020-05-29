@@ -40,7 +40,7 @@ object Comonad {
    */
   @inline def apply[F[_]](implicit instance: Comonad[F]): Comonad[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Comonad[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -49,7 +49,7 @@ object Comonad {
   trait AllOps[F[_], A] extends Ops[F, A] with CoflatMap.AllOps[F, A] {
     type TypeClassType <: Comonad[F]
   }
-  trait ToComonadOps {
+  trait ToComonadOps extends Serializable {
     implicit def toComonadOps[F[_], A](target: F[A])(implicit tc: Comonad[F]): Ops[F, A] {
       type TypeClassType = Comonad[F]
     } = new Ops[F, A] {

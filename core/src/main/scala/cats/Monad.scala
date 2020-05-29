@@ -129,7 +129,7 @@ object Monad {
    */
   @inline def apply[F[_]](implicit instance: Monad[F]): Monad[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Monad[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -142,7 +142,7 @@ object Monad {
   trait AllOps[F[_], A] extends Ops[F, A] with FlatMap.AllOps[F, A] with Applicative.AllOps[F, A] {
     type TypeClassType <: Monad[F]
   }
-  trait ToMonadOps {
+  trait ToMonadOps extends Serializable {
     implicit def toMonadOps[F[_], A](target: F[A])(implicit tc: Monad[F]): Ops[F, A] {
       type TypeClassType = Monad[F]
     } = new Ops[F, A] {

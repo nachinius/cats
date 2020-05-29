@@ -915,7 +915,7 @@ object Foldable {
    */
   @inline def apply[F[_]](implicit instance: Foldable[F]): Foldable[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Foldable[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -975,7 +975,7 @@ object Foldable {
   trait AllOps[F[_], A] extends Ops[F, A] with UnorderedFoldable.AllOps[F, A] {
     type TypeClassType <: Foldable[F]
   }
-  trait ToFoldableOps {
+  trait ToFoldableOps extends Serializable {
     implicit def toFoldableOps[F[_], A](target: F[A])(implicit tc: Foldable[F]): Ops[F, A] {
       type TypeClassType = Foldable[F]
     } = new Ops[F, A] {

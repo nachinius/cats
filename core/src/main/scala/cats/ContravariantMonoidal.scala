@@ -35,7 +35,7 @@ object ContravariantMonoidal extends SemigroupalArityFunctions {
    */
   @inline def apply[F[_]](implicit instance: ContravariantMonoidal[F]): ContravariantMonoidal[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: ContravariantMonoidal[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -46,7 +46,7 @@ object ContravariantMonoidal extends SemigroupalArityFunctions {
       with InvariantMonoidal.AllOps[F, A] {
     type TypeClassType <: ContravariantMonoidal[F]
   }
-  trait ToContravariantMonoidalOps {
+  trait ToContravariantMonoidalOps extends Serializable {
     implicit def toContravariantMonoidalOps[F[_], A](target: F[A])(implicit tc: ContravariantMonoidal[F]): Ops[F, A] {
       type TypeClassType = ContravariantMonoidal[F]
     } = new Ops[F, A] {

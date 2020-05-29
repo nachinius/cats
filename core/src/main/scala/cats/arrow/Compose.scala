@@ -53,7 +53,7 @@ object Compose {
    */
   @inline def apply[F[_, _]](implicit instance: Compose[F]): Compose[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Compose[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -63,7 +63,7 @@ object Compose {
     def >>>[C](g: F[B, C]): F[A, C] = typeClassInstance.andThen[A, B, C](self, g)
   }
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B]
-  trait ToComposeOps {
+  trait ToComposeOps extends Serializable {
     implicit def toComposeOps[F[_, _], A, B](target: F[A, B])(implicit tc: Compose[F]): Ops[F, A, B] {
       type TypeClassType = Compose[F]
     } = new Ops[F, A, B] {

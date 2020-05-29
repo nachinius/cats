@@ -294,7 +294,7 @@ object Reducible {
    */
   @inline def apply[F[_]](implicit instance: Reducible[F]): Reducible[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Reducible[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -329,7 +329,7 @@ object Reducible {
   trait AllOps[F[_], A] extends Ops[F, A] with Foldable.AllOps[F, A] {
     type TypeClassType <: Reducible[F]
   }
-  trait ToReducibleOps {
+  trait ToReducibleOps extends Serializable {
     implicit def toReducibleOps[F[_], A](target: F[A])(implicit tc: Reducible[F]): Ops[F, A] {
       type TypeClassType = Reducible[F]
     } = new Ops[F, A] {

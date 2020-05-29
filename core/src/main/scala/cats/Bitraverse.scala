@@ -121,7 +121,7 @@ object Bitraverse {
    */
   @inline def apply[F[_, _]](implicit instance: Bitraverse[F]): Bitraverse[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Bitraverse[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -133,7 +133,7 @@ object Bitraverse {
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B] with Bifoldable.AllOps[F, A, B] with Bifunctor.AllOps[F, A, B] {
     type TypeClassType <: Bitraverse[F]
   }
-  trait ToBitraverseOps {
+  trait ToBitraverseOps extends Serializable {
     implicit def toBitraverseOps[F[_, _], A, B](target: F[A, B])(implicit tc: Bitraverse[F]): Ops[F, A, B] {
       type TypeClassType = Bitraverse[F]
     } = new Ops[F, A, B] {

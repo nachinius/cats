@@ -32,7 +32,7 @@ object CommutativeApply {
    */
   @inline def apply[F[_]](implicit instance: CommutativeApply[F]): CommutativeApply[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: CommutativeApply[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -40,7 +40,7 @@ object CommutativeApply {
   trait AllOps[F[_], A] extends Ops[F, A] with Apply.AllOps[F, A] {
     type TypeClassType <: CommutativeApply[F]
   }
-  trait ToCommutativeApplyOps {
+  trait ToCommutativeApplyOps extends Serializable {
     implicit def toCommutativeApplyOps[F[_], A](target: F[A])(implicit tc: CommutativeApply[F]): Ops[F, A] {
       type TypeClassType = CommutativeApply[F]
     } = new Ops[F, A] {

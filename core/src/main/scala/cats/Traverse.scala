@@ -143,7 +143,7 @@ object Traverse {
    */
   @inline def apply[F[_]](implicit instance: Traverse[F]): Traverse[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Traverse[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -167,7 +167,7 @@ object Traverse {
       with UnorderedTraverse.AllOps[F, A] {
     type TypeClassType <: Traverse[F]
   }
-  trait ToTraverseOps {
+  trait ToTraverseOps extends Serializable {
     implicit def toTraverseOps[F[_], A](target: F[A])(implicit tc: Traverse[F]): Ops[F, A] {
       type TypeClassType = Traverse[F]
     } = new Ops[F, A] {

@@ -34,7 +34,7 @@ object InvariantSemigroupal extends SemigroupalArityFunctions {
    */
   @inline def apply[F[_]](implicit instance: InvariantSemigroupal[F]): InvariantSemigroupal[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: InvariantSemigroupal[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
@@ -42,7 +42,7 @@ object InvariantSemigroupal extends SemigroupalArityFunctions {
   trait AllOps[F[_], A] extends Ops[F, A] with Semigroupal.AllOps[F, A] with Invariant.AllOps[F, A] {
     type TypeClassType <: InvariantSemigroupal[F]
   }
-  trait ToInvariantSemigroupalOps {
+  trait ToInvariantSemigroupalOps extends Serializable {
     implicit def toInvariantSemigroupalOps[F[_], A](target: F[A])(implicit tc: InvariantSemigroupal[F]): Ops[F, A] {
       type TypeClassType = InvariantSemigroupal[F]
     } = new Ops[F, A] {

@@ -55,7 +55,7 @@ object Profunctor {
    */
   @inline def apply[F[_, _]](implicit instance: Profunctor[F]): Profunctor[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Profunctor[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -64,7 +64,7 @@ object Profunctor {
     def rmap[C](f: B => C): F[A, C] = typeClassInstance.rmap[A, B, C](self)(f)
   }
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B]
-  trait ToProfunctorOps {
+  trait ToProfunctorOps extends Serializable {
     implicit def toProfunctorOps[F[_, _], A, B](target: F[A, B])(implicit tc: Profunctor[F]): Ops[F, A, B] {
       type TypeClassType = Profunctor[F]
     } = new Ops[F, A, B] {

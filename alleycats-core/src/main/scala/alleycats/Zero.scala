@@ -29,7 +29,7 @@ object Zero {
    */
   @inline def apply[A](implicit instance: Zero[A]): Zero[A] = instance
 
-  trait Ops[A] {
+  trait Ops[A] extends Serializable {
     type TypeClassType <: Zero[A]
     def self: A
     val typeClassInstance: TypeClassType
@@ -37,7 +37,7 @@ object Zero {
     def nonZero(implicit ev: Eq[A]): Boolean = typeClassInstance.nonZero(self)(ev)
   }
   trait AllOps[A] extends Ops[A]
-  trait ToZeroOps {
+  trait ToZeroOps extends Serializable {
     implicit def toZeroOps[A](target: A)(implicit tc: Zero[A]): Ops[A] {
       type TypeClassType = Zero[A]
     } = new Ops[A] {
