@@ -40,7 +40,9 @@ object CommutativeArrow {
       val typeClassInstance: TypeClassType = tc
     }
   }
+  @deprecated("Use cats.syntax object imports", "2.2.0")
   object nonInheritedOps extends ToCommutativeArrowOps
+  @deprecated("Use cats.syntax object imports", "2.2.0")
   object ops {
     implicit def toAllCommutativeArrowOps[F[_, _], A, B](
       target: F[A, B]
